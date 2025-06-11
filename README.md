@@ -10,28 +10,33 @@ This way, when the full PDF is printed, the pages with images will be single sid
 - Python 3.12
 
 ## Steps
+
 ### Build virtual environment for Python script
 
 Create a virtual environment to run Python code.
 
 Navigate to the project directory and run the following:
+
 ```
 python3 -m venv venv
 ```
 
-This will create a /venv directory within the project directory. 
+This will create a /venv directory within the project directory.
 
 Activate the new virtual environment:
+
 ```
 source venv/bin/activate
 ```
 
 You’ll know it worked if your terminal prompt changes to:
+
 ```
 (venv) <your workspace name>@hostname:~/<project directory>$
 ```
 
-*Note: After running the code, if you wish to deactivate the virtual environment, run: 
+*Note: After running the code, if you wish to deactivate the virtual environment, run:
+
 ```
 deactivate
 ```
@@ -41,4 +46,3 @@ deactivate
 ```
 pip install -r requirements.txt
 ```
-
