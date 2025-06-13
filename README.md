@@ -5,6 +5,11 @@
 This way, when the full PDF is printed, the pages with images will be single sided.
 - The margins on each image page will be set to 9.5 mm/0.375 inches, with the image scaled within these margins.
 
+*Notes*:
+
+- This application assumes that all images are stored in the same directory.
+- **Currently, only .png image files are supported.**
+
 ## Prerequisites/Tooling
 
 - Python 3.12
@@ -46,3 +51,17 @@ deactivate
 ```
 pip install -r requirements.txt
 ```
+
+## Run the script
+
+Run the script with the following command.
+
+```
+python3 imgs-to-pdf-book.py <path to introPage.pdf> <image directory path> <path for final output PDF>
+```
+
+The arguments are as follows:
+
+1. **path to introPage.pdf**: The path to the introPage.pdf file.
+2. **image directory path**: The path to the directory containing your images.
+3. **path for final output PDF**: The path where the final created pdf, containing the introPage and all images, will be placed after it is created.

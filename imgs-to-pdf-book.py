@@ -5,6 +5,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.lib.utils import ImageReader
 from PyPDF2 import PdfMerger, PdfReader
 import io
+import sys
 
 # This code converts all PNG images in a specified folder into a one-sided PDF book.
 # Each image is resized to fit the page, and a blank page is added after each image.
@@ -20,7 +21,6 @@ import io
 # Convert inches to points (1 inch = 72 points)
 # Standard letter size in points
 # Letter size: 8.5 inches × 11 inches
-
 
 def blank_page_pdf():
     buffer = io.BytesIO()
@@ -95,9 +95,12 @@ def create_output_book(intro_pdf_path, image_folder, output_pdf_path):
     print(f"Final book PDF saved as {output_pdf_path}")
 
 if __name__ == "__main__":
-    intro_pdf_path = "/mnt/c/Users/avfau/Pictures/zillow/introPage.pdf"
-    image_folder = "/mnt/c/Users/avfau/Pictures/zillow"
-    output_pdf_path = "/mnt/c/Users/avfau/Pictures/zillow/output_book.pdf"
+    if len(sys.argv) != 4:
+        print("Usage: python imgs-to-pdf-book.py <path to introPage.pdf> <image directory path> <path for final output PDF>")
+        sys.exit(1)
+    print(len(sys.argv), sys.argv)
+    intro_pdf_path =  sys.argv[1] 
+    image_folder = sys.argv[2] 
+    output_pdf_path = sys.argv[3]
 
-# Example usage
 create_output_book(intro_pdf_path, image_folder, output_pdf_path)
