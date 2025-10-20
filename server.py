@@ -1,10 +1,9 @@
-from fastapi import FastAPI, UploadFile, File, Form
+from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import Response
 import tempfile, os
 from pdf_book_maker import make_pdf_book
 
-
-app = FastAPI(title="Book PDF Maker")
+app = FastAPI(title="Image-to-PDF Book API")
 
 @app.post("/api/create-pdf-book")
 async def create_pdf_book(intro_pdf: UploadFile = File(...), images: list[UploadFile] = File(...)):
@@ -13,21 +12,23 @@ async def create_pdf_book(intro_pdf: UploadFile = File(...), images: list[Upload
         image_dir = os.path.join(tempdir, "images")
         os.makedirs(image_dir)
 
-        # Save uploaded intro PDF
+        # Save intro PDF
         with open(intro_path, "wb") as f:
             f.write(await intro_pdf.read())
 
-        # Save uploaded images
+        # Save uploaded PNGs
         for img in images:
             with open(os.path.join(image_dir, img.filename), "wb") as f:
                 f.write(await img.read())
 
+        # Create output PDF
         output_pdf_path = os.path.join(tempdir, "book.pdf")
         make_pdf_book(intro_path, image_dir, output_pdf_path)
 
+        # Read and return the finished PDF
         with open(output_pdf_path, "rb") as f:
-            pdf_data = f.read()
+            data = f.read()
 
-    return Response(pdf_data, media_type="application/pdf", headers={
+    return Response(data, media_type="application/pdf", headers={
         "Content-Disposition": "attachment; filename=book.pdf"
     })
