@@ -1,3 +1,6 @@
 Pillow
 reportlab
 PyPDF2
+reportlab
+fastapi
+uvicorn
