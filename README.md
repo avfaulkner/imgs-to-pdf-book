@@ -14,7 +14,7 @@ This way, when the full PDF is printed, the pages with images will be single sid
 
 - Python 3.12
 
-## Steps
+## Steps to Run Locally
 
 ### Build virtual environment for Python script
 
@@ -52,7 +52,7 @@ deactivate
 pip install -r requirements.txt
 ```
 
-## Run the script
+### Run the script
 
 Run the script with the following command.
 
