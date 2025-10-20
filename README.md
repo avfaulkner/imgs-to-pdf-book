@@ -1,20 +1,32 @@
 # imgs-to-pdf
 
-- This repo will add all PNG files in a directory to a single PDF file.
-- The PNG images will be visible on all odd number pages, while every even numbered page will be left blank.
-This way, when the full PDF is printed, the pages with images will be single sided.
-- The margins on each image page will be set to 9.5 mm/0.375 inches, with the image scaled within these margins.
+This project converts all PNG images in a directory into a print-ready, single-sided PDF file.  
+Each image appears on an odd-numbered page, with a blank page inserted after it — ideal for coloring books, art prints, or journaling pages.
 
 *Notes*:
 
 - This application assumes that all images are stored in the same directory.
 - **Currently, only .png image files are supported.**
 
-## Prerequisites/Tooling
 
-- Python 3.12
+
+## Features
+
+- Combines all `.png` files from a folder into one PDF.  
+- Each image appears on an odd-numbered page, followed by a blank page.  
+- Adds an optional intro page.  
+- Automatically scales images to fit inside 0.375-inch (9.5 mm) margins.  
+- Works both:
+  - **Locally** via Python CLI  
+  - **Online** through a connected [Netlify web app](https://github.com/avfaulkner/book-page-estimator)
+
+---
 
 ## Steps to Run Locally
+
+### Prerequisites/Tooling
+
+- Python 3.12
 
 ### Build virtual environment for Python script
 
@@ -65,3 +77,57 @@ The arguments are as follows:
 1. **path to introPage.pdf**: The path to the introPage.pdf file.
 2. **image directory path**: The path to the directory containing your images.
 3. **path for final output PDF**: The path where the final created pdf, containing the introPage and all images, will be placed after it is created.
+
+Example:
+
+```
+python3 imgs-to-pdf-book.py introPage.pdf ./images ./output/finalBook.pdf
+```
+
+---
+
+## Web Usage (Netlify + Render)
+
+This project can now also run fully online by uploading images in a browser via the Netlify frontend and downloading the generated pdf file.
+Netlify will send the request to Render, which is used for the backend processing, via an [API endpoint](https://imgs-to-pdf-book.onrender.com/api/create-pdf-book).
+
+### Architecture Overview
+
+
+          ┌────────────────────┐
+          │    User Browser    │
+          │  (Netlify Frontend)│
+          └─────────┬──────────┘
+                    │
+        Upload intro.pdf + PNGs via form
+                    │
+                    ▼
+          ┌────────────────────┐
+          │  Render Backend    │
+          │ (FastAPI + Python) │
+          └─────────┬──────────┘
+                    │
+           Builds single-sided
+             PDF using Pillow,
+           ReportLab, and PyPDF2
+                    │
+                    ▼
+          ┌────────────────────┐
+          │    User Browser    │
+          │  (Auto Download)   │
+          └────────────────────┘
+
+### Workflow Summary
+
+1. Open Netlify site (frontend).
+2. Upload:
+    - introPage.pdf
+    - .png image pages
+3. Click Create Book
+4. Render backend processes images → builds the PDF → sends it back
+5. Browser automatically downloads book.pdf.
+
+### Testing the Render API
+
+Send a POST request via curl to the API endpoint with some test files. A file called book.pdf should be downloaded with the combined uploaded files. 
+This can be done in the 'test' directory in this repo.
