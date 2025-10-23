@@ -131,3 +131,11 @@ Netlify will send the request to Render, which is used for the backend processin
 
 Send a POST request via curl to the API endpoint with some test files. A file called book.pdf should be downloaded with the combined uploaded files. 
 This can be done in the 'test' directory in this repo.
+
+To test the connection, run:
+
+```
+curl -X OPTIONS https://imgs-to-pdf-book.onrender.com/api/create-pdf-book -i
+```
+
+A successful response for this test should include `HTTP/2 200`.
