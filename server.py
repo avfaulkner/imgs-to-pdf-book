@@ -7,6 +7,18 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="Image-to-PDF Book API")
 
+# Enable CORS (important for browser uploads)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://book-page-estimator.netlify.app",
+        "http://localhost:5173",  # for local testing
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 @app.post("/api/create-pdf-book")
 async def create_pdf_book(intro_pdf: UploadFile = File(...), images: list[UploadFile] = File(...)):
     with tempfile.TemporaryDirectory() as tempdir:
@@ -34,12 +46,4 @@ async def create_pdf_book(intro_pdf: UploadFile = File(...), images: list[Upload
     return Response(data, media_type="application/pdf", headers={
         "Content-Disposition": "attachment; filename=book.pdf"
     })
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["https://book-page-estimator.netlify.app"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
