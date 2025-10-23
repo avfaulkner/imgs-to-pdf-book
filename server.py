@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, Request
 from fastapi.responses import Response, StreamingResponse
 import tempfile, os, io
 from pdf_book_maker import make_pdf_book
@@ -47,3 +47,11 @@ async def create_pdf_book(intro_pdf: UploadFile = File(...), images: list[Upload
         "Content-Disposition": "attachment; filename=book.pdf"
     })
 
+@app.options("/{full_path:path}")
+async def preflight_handler(request: Request):
+    """Handle all CORS preflight OPTIONS requests manually."""
+    response = Response()
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "*"
+    return response
