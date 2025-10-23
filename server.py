@@ -1,7 +1,9 @@
 from fastapi import FastAPI, UploadFile, File
-from fastapi.responses import Response
-import tempfile, os
+from fastapi.responses import Response, StreamingResponse
+import tempfile, os, io
 from pdf_book_maker import make_pdf_book
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI(title="Image-to-PDF Book API")
 
@@ -32,3 +34,12 @@ async def create_pdf_book(intro_pdf: UploadFile = File(...), images: list[Upload
     return Response(data, media_type="application/pdf", headers={
         "Content-Disposition": "attachment; filename=book.pdf"
     })
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://book-page-estimator.netlify.app"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
